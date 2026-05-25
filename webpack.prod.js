@@ -30,16 +30,37 @@ module.exports = merge(common, {
       filename: "assets/css/[name].[contenthash].css",
     }),
 
-    new CompressionPlugin(),
+    new CompressionPlugin({
+      algorithm: "gzip",
+      test: /\.(js|css|html|svg)$/,
+    }),
   ],
 
   optimization: {
     minimize: true,
 
-    minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        terserOptions: {
+          compress: {
+            drop_console: true,
+          },
+        },
+      }),
+      ,
+      new CssMinimizerPlugin(),
+    ],
 
     splitChunks: {
       chunks: "all",
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all",
+        },
+      },
     },
 
     runtimeChunk: "single",

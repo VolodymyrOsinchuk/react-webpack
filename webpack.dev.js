@@ -3,9 +3,7 @@ const common = require("./webpack.common");
 
 module.exports = merge(common, {
   mode: "development",
-
   devtool: "eval-source-map",
-
   devServer: {
     port: 8080,
 
@@ -25,6 +23,16 @@ module.exports = merge(common, {
       {
         context: ["/api", "/user"],
         target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+    ],
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"], // ✅ OK ici
       },
     ],
   },

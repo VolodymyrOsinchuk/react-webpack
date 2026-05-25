@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const path = require("path");
 const multer = require("multer");
@@ -7,7 +9,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const conf = require("./conf");
 const config = require("../webpack.dev");
 const compiler = webpack(config);
 
@@ -16,7 +17,7 @@ const product = require("./routes/product");
 const auth = require("./routes/auth");
 
 const app = express();
-const port = conf.port;
+const port = process.env.PORT || 3000;
 
 const DIST_DIR = path.join(__dirname, "../src/public");
 const HTML_FILE = path.join(DIST_DIR, "index.html");
@@ -50,7 +51,7 @@ app.get(/.*/, (req, res) => {
 mongoose.set("strictQuery", false);
 // mongoDB connection
 mongoose
-  .connect(conf.mongoUrl)
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("BD est bien connecté");
   })
