@@ -6,7 +6,7 @@ module.exports = {
   entry: "./src/main.jsx",
 
   output: {
-    path: path.resolve(__dirname, "../build"),
+    path: path.resolve(__dirname, "build"),
     filename: "assets/js/[name].[contenthash].js",
     publicPath: "/",
     clean: true,
