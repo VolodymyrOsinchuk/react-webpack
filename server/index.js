@@ -5,6 +5,7 @@ const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const conf = require("./conf");
 const config = require("../webpack.dev");
@@ -12,6 +13,7 @@ const compiler = webpack(config);
 
 const user = require("./routes/user");
 const product = require("./routes/product");
+const auth = require("./routes/auth");
 
 const app = express();
 const port = conf.port;
@@ -19,19 +21,26 @@ const port = conf.port;
 const DIST_DIR = path.join(__dirname, "../src/public");
 const HTML_FILE = path.join(DIST_DIR, "index.html");
 
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://localhost:8080"],
+    credentials: true,
+  }),
+);
+app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+
+app.use("/user", user);
+app.use("/api/products", product);
+app.use("/api/auth", auth);
 
 app.use(
   webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath,
-  })
+  }),
 );
-
-app.use("/user", user);
-app.use("/api", product);
 
 app.get(/.*/, (req, res) => {
   console.log("GET /*");

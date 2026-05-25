@@ -1,46 +1,31 @@
-// const path = require("path");
-// const { merge } = require("webpack-merge");
-// const common = require("./webpack.common.js");
-
-// module.exports = merge(common, {
-//   mode: "development",
-//   devtool: "inline-source-map",
-//   module: {
-//     rules: [
-//       {
-//         test: /\.(js|jsx)$/,
-//         exclude: /node_modules/,
-//         loader: "babel-loader",
-//       },
-//       {
-//         test: /\.css$/i,
-//         use: ["style-loader", "css-loader"],
-//       },
-//     ],
-//   },
-//   resolve: {
-//     extensions: [".js", ".jsx"], // Ajoutez .jsx dans la liste des extensions à résoudre
-//   },
-//   devServer: {
-//     contentBase: path.join(__dirname, "/build"),
-//     port: 3000,
-//     open: true,
-//     compress: true,
-//   },
-// });
-const path = require("path");
 const { merge } = require("webpack-merge");
-const common = require("./webpack.common.js");
+const common = require("./webpack.common");
 
 module.exports = merge(common, {
   mode: "development",
-  devtool: "inline-source-map",
+
+  devtool: "eval-source-map",
+
   devServer: {
-    static: path.join(__dirname, "build"),
-    port: 3000,
+    port: 8080,
+
     open: true,
-    compress: true,
+
     hot: true,
+
+    compress: true,
+
     historyApiFallback: true,
+
+    static: {
+      directory: "./src/public",
+    },
+
+    proxy: [
+      {
+        context: ["/api", "/user"],
+        target: "http://localhost:3000",
+      },
+    ],
   },
 });
