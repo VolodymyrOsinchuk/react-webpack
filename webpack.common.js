@@ -16,10 +16,10 @@ module.exports = {
     extensions: [".js", ".jsx"],
 
     alias: {
-      "@": path.resolve(__dirname, "../src"),
-      "@components": path.resolve(__dirname, "../src/components"),
-      "@pages": path.resolve(__dirname, "../src/pages"),
-      "@services": path.resolve(__dirname, "../src/services"),
+      "@": path.resolve(__dirname, "./src"),
+      "@components": path.resolve(__dirname, "./src/components"),
+      "@pages": path.resolve(__dirname, "./src/pages"),
+      "@services": path.resolve(__dirname, "./src/services"),
     },
   },
 
